@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var dbConn  = require('../lib/db');
 
-router.get('/', function(req, res, next) {      
+router.get('/', (req, res, next)=> {      
     dbConn.query('SELECT * FROM users ORDER BY id desc',function(err,rows)     {
         if(err) {
             req.flash('error', err);
@@ -16,7 +16,7 @@ router.get('/', function(req, res, next) {
 });
 
 // display add user page
-router.get('/add', function(req, res, next) {    
+router.get('/add', (req, res, next)=> {    
     // render to add.ejs
     res.render('users/add', {
         name: '',
@@ -26,7 +26,7 @@ router.get('/add', function(req, res, next) {
 })
 
 // add a new user
-router.post('/add', function(req, res, next) {    
+router.post('/add', (req, res, next)=> {    
 
     let name = req.body.name;
     let email = req.body.email;
@@ -56,7 +56,7 @@ router.post('/add', function(req, res, next) {
         }
         
         // insert query
-        dbConn.query('INSERT INTO users SET ?', form_data, function(err, result) {
+        dbConn.query('INSERT INTO users SET ?', form_data, (err, result)=> {
             //if(err) throw err
             if (err) {
                 req.flash('error', err)
@@ -80,7 +80,7 @@ router.get('/edit/(:id)', function(req, res, next) {
 
     let id = req.params.id;
    
-    dbConn.query('SELECT * FROM users WHERE id = ' + id, function(err, rows, fields) {
+    dbConn.query('SELECT * FROM users WHERE id = ' + id, (err, rows, fields)=> {
         if(err) throw err
          
         // if user not found
@@ -103,7 +103,7 @@ router.get('/edit/(:id)', function(req, res, next) {
 })
 
 // update user data
-router.post('/update/:id', function(req, res, next) {
+router.post('/update/:id', (req, res, next)=> {
 
     let id = req.params.id;
     let name = req.body.name;
@@ -134,7 +134,7 @@ router.post('/update/:id', function(req, res, next) {
             position:position
         }
         // update query
-        dbConn.query('UPDATE users SET ? WHERE id = ' + id, form_data, function(err, result) {
+        dbConn.query('UPDATE users SET ? WHERE id = ' + id, form_data, (err, result)=> {
             //if(err) throw err
             if (err) {
                 // set flash message
@@ -159,7 +159,7 @@ router.get('/delete/(:id)', function(req, res, next) {
 
     let id = req.params.id;
      
-    dbConn.query('DELETE FROM users WHERE id = ' + id, function(err, result) {
+    dbConn.query('DELETE FROM users WHERE id = ' + id, (err, result)=> {
         //if(err) throw err
         if (err) {
             // set flash message
